@@ -24,3 +24,92 @@
   -webkit-line-clamp:$row;
 }
 
+//设置theme属性选择主体背景的颜色
+@mixin bg_color(){
+  background: $background-color-theme;
+  [data-theme='theme1'] & {
+     background: $background-color-theme1;
+   }
+  [data-theme='theme2'] & {
+    background: $background-color-theme2;
+  }
+}
+//设置theme和dpr属性选择主体图标
+@mixin bg_img($data){
+  [data-theme='theme'] & {
+    background-image: url($data + '_163.png');
+  }
+  [data-theme='theme1'] & {
+    background-image: url($data + '_qq.png');
+  }
+  [data-theme='theme2'] & {
+    background-image: url($data + '_fetone.png');
+  }
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  // dpr为2下的图片
+  [data-theme='theme'][data-dpr='2'] & {
+    background-image: url($data + '_163@2x.png');
+  }
+  [data-theme='theme1'][data-dpr='2'] & {
+    background-image: url($data + '_qq@2x.png');
+  }
+  [data-theme='theme2'][data-dpr='2'] & {
+    background-image: url($data + '_fetone@2x.png');
+  }
+  // dpr为3下的图片
+  [data-theme='theme'][data-dpr='3'] & {
+    background-image: url($data + '_163@3x.png');
+  }
+  [data-theme='theme1'][data-dpr='3'] & {
+    background-image: url($data + '_qq@3x.png');
+  }
+  [data-theme='theme2'][data-dpr='3'] & {
+    background-image: url($data + '_fetone@3x.png');
+  }
+}
+
+//设置主体 次要 背景的颜色
+@mixin bg_sub_color(){
+  background: $background-color-sub-theme;
+  [data-theme='theme1'] & {
+    background: $background-color-sub-theme1;
+  }
+  [data-theme='theme2'] & {
+    background: $background-color-sub-theme2;
+  }
+}
+
+//设置字体主题的颜色
+@mixin font_color(){
+  color: $font-color-theme;
+  [data-theme='theme1'] & {
+    color: $font-color-theme1;
+  }
+  [data-theme='theme2'] & {
+    color: $font-color-theme2;
+  }
+}
+
+//设置字体主题的颜色(激活)
+@mixin font_active_color(){
+  color: $font-active-color-theme;
+  [data-theme='theme1'] & {
+    color: $font-active-color-theme1;
+  }
+  [data-theme='theme2'] & {
+    color: $font-active-color-theme2;
+  }
+}
+
+//设置边框主题的颜色(激活)
+@mixin border_color(){
+  border-color: $border-color-theme;
+  [data-theme='theme1'] & {
+    border-color: $border-color-theme1;
+  }
+  [data-theme='theme2'] & {
+    border-color: $border-color-theme2;
+  }
+}

@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    <div class="test">
-      <p>哈哈哈哈</p>
-    </div>
+    <Header></Header>
+    <Tab></Tab>
+    <router-view></router-view>
   </div>
 </template>
 
-<style scoped lang="scss">
-.test{
-  width: 400px;
-  height: 400px;
-  background: red;
-  /*transform: translate(50px, 50px);*/
+<script>
+import Header from './components/Header'
+import Tab from './components/Tab'
+export default {
+  name: 'App',
+  components: {
+    Header,
+    Tab
+  },
+  methods: {
+
+  }
 }
+</script>
+<style scoped lang="scss">
 
 </style>
