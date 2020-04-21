@@ -1,27 +1,31 @@
 <template>
 <div class="recommend">
-  <IScroll>
-    <div>
-      <!--  banners-->
-      <Banner :banners="banners"></Banner>
-      <!--  推荐歌单-->
-      <Personalized :personalized="personalized" :title="'推荐歌单'" @select="fatherSelect"></Personalized>
-      <!--  最新专辑-->
-      <Personalized :personalized="albums" :title="'最新专辑'"></Personalized>
-      <!--  推荐新音乐-->
-      <NewSongs :newSongs="newSongs"></NewSongs>
-    </div>
-  </IScroll>
+  <div class="recommend-iscroll">
+    <IScroll>
+      <div>
+        <!--  banners-->
+        <Banner :banners="banners"></Banner>
+        <!--  推荐歌单-->
+        <Personalized :personalized="personalized" :title="'推荐歌单'" @select="fatherSelect" :type="'personalized'"></Personalized>
+        <!--  最新专辑-->
+        <Personalized :personalized="albums" :title="'最新专辑'" @select="fatherSelect" :type="'albums'"></Personalized>
+        <!--  推荐新音乐-->
+        <NewSongs :newSongs="newSongs"></NewSongs>
+      </div>
+    </IScroll>
+  </div>
 <!--  二级页面-->
-  <router-view></router-view>
+  <Transition>
+    <router-view></router-view>
+  </Transition>
 </div>
 </template>
 
 <script>
 import { getAlbum, getBanner, getNewSong, getPersonalized } from '../api'
-import Banner from '../components/Banner'
-import Personalized from '../components/Personalized'
-import NewSongs from '../components/NewSongs'
+import Banner from '../components/recommend/Banner'
+import Personalized from '../components/recommend/Personalized'
+import NewSongs from '../components/recommend/NewSongs'
 import IScroll from '../components/IScroll'
 export default {
   name: 'Recommend',
@@ -35,9 +39,9 @@ export default {
   },
   methods: {
     // 二级页面链接
-    fatherSelect (id) {
+    fatherSelect (id, type) {
       this.$router.push({
-        path: `/recommend/detail/${id}`
+        path: `/recommend/detail/${id}/${type}`
       })
     }
   },
@@ -92,6 +96,28 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: hidden;
+  .recommend-iscroll{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 }
+  .v-enter{
+     transform: translateX(100%);
+   }
+  .v-enter-active{
+    transition: transform 0.5s;
+  }
+  .v-enter-to{
+    transform: translateX(0%);
+  }
+  .v-leave{
+    transform: translateX(0%);
+  }
+  .v-leave-active{
+    transition: transform 0.5s;
+  }
+  .v-leave-to{
+    transform: translateX(100%);
+  }
 </style>

@@ -42,7 +42,7 @@ const routes = [
     path: '/recommend',
     component: Recommend,
     children: [
-      { path: '/recommend/detail/:id', component: Detail }
+      { path: '/recommend/detail/:id/:type', component: Detail }
     ]
   },
   { path: '/singer', component: Singer },

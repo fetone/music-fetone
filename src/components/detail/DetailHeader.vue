@@ -42,31 +42,33 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  @import "../assets/css/variable";
-@import "../assets/css/mixin";
+  @import "../../assets/css/variable";
+@import "../../assets/css/mixin";
 .header{
   width: 100%;
   height: 100px;
   @include bg_color();
   display: flex;
   justify-content: space-between;
+  position: relative;
+  z-index: 999;
   .header-left, .header-right{
     width: 84px;
     height: 84px;
     margin-top: 8px;
   }
   .header-left{
-    @include bg_img('../assets/images/back');
+    @include bg_img('../../assets/images/back');
   }
   .header-right{
-    @include bg_img('../assets/images/more');
+    @include bg_img('../../assets/images/more');
   }
   .header-title{
     text-align: center;
     line-height: 100px;
     color: #FFFFFF;
     font-weight: bold;
-    @include font_size($font_large);
+    @include font_size($font_medium);
     @include no-wrap();
   }
 }

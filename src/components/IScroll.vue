@@ -9,10 +9,19 @@
 import IScroll from 'iscroll/build/iscroll-probe'
 export default {
   name: 'IScroll',
+  methods: {
+    // 创建一个方法用来监听页面的滚动, 并传递滚动距离的参数
+    scrolling (fn) {
+      this.iscroll.on('scroll', () => {
+        fn(this.iscroll.y)
+      })
+    }
+  },
   mounted () {
     this.iscroll = new IScroll(this.$refs.wrapper, {
       mouseWheel: true,
       scrollbars: false,
+      probeType: 3,
       // 解决拖拽卡顿问题
       scrollX: false,
       scrollY: true,
