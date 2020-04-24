@@ -1,26 +1,66 @@
 <template>
-    <div class="normal-player">
+  <Transition
+    :css="false"
+    @enter="enter"
+    @leave="leave"
+  >
+    <div class="normal-player" v-show="this.isFullScreen">
       <div class="player-wrapper">
         <PlayHeader></PlayHeader>
-        <PlayerMedium></PlayerMedium>
-        <PlayerBottom></PlayerBottom>
+        <PlayerMedium :currentTime="currentTime"></PlayerMedium>
+        <PlayerBottom :totalTime="totalTime" :currentTime="currentTime"></PlayerBottom>
       </div>
       <div class="player-bg">
-        <img src="https://music.163.com/api/img/blur/109951164923581016" alt="">
+        <img :src="currentSong.imgUrl" alt="">
       </div>
     </div>
+  </Transition>
 </template>
 
 <script>
 import PlayHeader from './PlayerHeader'
 import PlayerMedium from './PlayerMedium'
 import PlayerBottom from './PlayerBottom'
+import { mapGetters } from 'vuex'
+import Velocity from 'velocity-animate'
+import 'velocity-animate/velocity.ui.js'
+
 export default {
   name: 'NormalPlayer',
+  methods: {
+    enter (el, done) {
+      Velocity(el, 'transition.shrinkIn', { duration: 500 }, function () {
+        done()
+      })
+    },
+    leave (el, done) {
+      Velocity(el, 'transition.shrinkOut', { duration: 500 }, function () {
+        done()
+      })
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'isFullScreen',
+      'currentSong'
+    ])
+  },
   components: {
     PlayHeader,
     PlayerMedium,
     PlayerBottom
+  },
+  props: {
+    totalTime: {
+      type: Number,
+      default: 0,
+      required: true
+    },
+    currentTime: {
+      type: Number,
+      default: 0,
+      required: true
+    }
   }
 }
 </script>

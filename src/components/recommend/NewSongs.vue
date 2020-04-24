@@ -4,7 +4,7 @@
     最新音乐
   </div>
   <ul class="song-list">
-    <li v-for="value in newSongs" :key="value.id">
+    <li v-for="value in newSongs" :key="value.id" @click="showNormalPlayer(value.id)">
       <img v-lazy="value.picUrl" alt="">
       <div class="desc">
         <h3>{{value.name}}</h3>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'NewSongs',
   props: {
@@ -23,6 +24,19 @@ export default {
       type: Array,
       default: () => [],
       required: true
+    }
+  },
+  methods: {
+    ...mapActions([
+      'setFullScreen',
+      'setMiniPlayer',
+      'setSongsInfo',
+      'setSongLyric'
+    ]),
+    showNormalPlayer (id) {
+      this.setFullScreen(true)
+      this.setSongsInfo([id])
+      this.setSongLyric(id)
     }
   }
 }

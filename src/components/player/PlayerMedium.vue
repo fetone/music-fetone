@@ -1,64 +1,15 @@
 <template>
   <swiper :options="swiperOption" class="player-medium">
     <swiper-slide class="cd">
-      <div class="cd-imgBorder">
-        <img src="https://music.163.com/api/img/blur/109951164923581016" alt="">
+      <div class="cd-imgBorder" ref="cdImg">
+        <img :src="currentSong.imgUrl" alt="">
       </div>
-      <p>哈哈哈哈哈哈哈哈</p>
+      <p>{{getFirstLyric()}}</p>
     </swiper-slide>
-    <swiper-slide class="lyric">
-      <IScroll>
+    <swiper-slide class="lyric" ref="slide">
+      <IScroll ref="iscroll">
         <ul>
-          <li>我是第1个li</li>
-          <li>我是第2个li</li>
-          <li>我是第3个li</li>
-          <li>我是第4个li</li>
-          <li>我是第5个li</li>
-          <li>我是第6个li</li>
-          <li>我是第7个li</li>
-          <li>我是第8个li</li>
-          <li>我是第9个li</li>
-          <li>我是第10个li</li>
-          <li>我是第11个li</li>
-          <li>我是第12个li</li>
-          <li>我是第13个li</li>
-          <li>我是第14个li</li>
-          <li>我是第15个li</li>
-          <li>我是第16个li</li>
-          <li>我是第17个li</li>
-          <li>我是第18个li</li>
-          <li>我是第19个li</li>
-          <li>我是第20个li</li>
-          <li>我是第21个li</li>
-          <li>我是第22个li</li>
-          <li>我是第23个li</li>
-          <li>我是第24个li</li>
-          <li>我是第25个li</li>
-          <li>我是第26个li</li>
-          <li>我是第27个li</li>
-          <li>我是第28个li</li>
-          <li>我是第29个li</li>
-          <li>我是第30个li</li>
-          <li>我是第31个li</li>
-          <li>我是第32个li</li>
-          <li>我是第33个li</li>
-          <li>我是第34个li</li>
-          <li>我是第35个li</li>
-          <li>我是第36个li</li>
-          <li>我是第37个li</li>
-          <li>我是第38个li</li>
-          <li>我是第39个li</li>
-          <li>我是第40个li</li>
-          <li>我是第41个li</li>
-          <li>我是第42个li</li>
-          <li>我是第43个li</li>
-          <li>我是第44个li</li>
-          <li>我是第45个li</li>
-          <li>我是第46个li</li>
-          <li>我是第47个li</li>
-          <li>我是第48个li</li>
-          <li>我是第49个li</li>
-          <li>我是第50个li</li>
+          <li v-for="(value, index) in songLyric" :key="index" :class="{'active': currentNum === index}">{{value}}</li>
         </ul>
       </IScroll>
     </swiper-slide>
@@ -70,6 +21,7 @@
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 import IScroll from '../IScroll'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'PlayerMedium',
@@ -88,6 +40,79 @@ export default {
         observer: true,
         observeParents: true,
         observeSlideChildren: true
+      },
+      currentNum: '0'
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'isPlaying',
+      'currentSong',
+      'songLyric'
+    ])
+  },
+  watch: {
+    isPlaying (newValue, oldValue) {
+      if (newValue) {
+        this.$refs.cdImg.classList.add('active')
+      } else {
+        this.$refs.cdImg.classList.remove('active')
+      }
+    },
+    currentSong (newValue, oldValue) {
+      this.setSongLyric(newValue.id)
+    },
+    currentTime (newValue) {
+      /* // 高亮歌词
+      const lineNum = Math.floor(newValue)
+      const currentLyric = this.songLyric[lineNum]
+      if (currentLyric !== undefined && currentLyric !== '') {
+        this.currentNum = lineNum + ''
+        // 歌词同步
+        const activeHeight = document.querySelector('li.active').offsetTop
+        const slideHeight = this.$refs.slide.$el.offsetHeight
+        if (activeHeight > slideHeight / 2) {
+          this.$refs.iscroll.scrollTo(0, slideHeight / 2 - activeHeight, 1000)
+        }
+      } */
+      // 高亮歌词
+      const lineNum = Math.floor(newValue)
+      this.currentNum = this.calCurrentNum(lineNum)
+      // 歌词同步
+      const activeHeight = document.querySelector('li.active').offsetTop
+      const slideHeight = this.$refs.slide.$el.offsetHeight
+      if (activeHeight > slideHeight / 2) {
+        this.$refs.iscroll.scrollTo(0, slideHeight / 2 - activeHeight, 1000)
+      } else {
+        this.$refs.iscroll.scrollTo(0, 0, 1000)
+      }
+    },
+    songLyric (newValue) {
+      for (const key in newValue) {
+        this.currentNum = key
+        return
+      }
+    }
+  },
+  methods: {
+    getFirstLyric () {
+      for (const key in this.songLyric) {
+        return this.songLyric[key]
+      }
+    },
+    ...mapActions([
+      'setSongLyric'
+    ]),
+    calCurrentNum (lineNum) {
+      if (lineNum < 0) {
+        return this.currentNum
+      }
+      const currentLyric = this.songLyric[lineNum]
+      if (currentLyric === undefined || currentLyric === '') {
+        lineNum--
+        return this.calCurrentNum(lineNum)
+      } else {
+        return lineNum + ''
       }
     }
   },
@@ -95,6 +120,13 @@ export default {
     Swiper,
     SwiperSlide,
     IScroll
+  },
+  props: {
+    currentTime: {
+      type: Number,
+      default: 0,
+      required: true
+    }
   }
 }
 </script>
@@ -116,6 +148,19 @@ export default {
         border-radius: 50%;
         overflow: hidden;
         margin: 0 auto;
+        animation: sport 4s linear infinite;
+        animation-play-state: paused;
+        &.active{
+          animation-play-state: running;
+        }
+        @keyframes sport {
+          from {
+            transform: rotate(0deg);
+          }
+          to{
+            transform: rotate(360deg);
+          }
+        }
         img {
           width: 100%;
           height: 100%;
@@ -136,6 +181,9 @@ export default {
         @include font_size($font_medium);
         &:last-of-type{
           padding-bottom: 100px;
+        }
+        &.active {
+          color: #ffffff;
         }
       }
     }

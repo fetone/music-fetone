@@ -3,20 +3,20 @@
     <Header></Header>
     <Tab></Tab>
     <router-view></router-view>
-    <Play></Play>
+    <Player></Player>
   </div>
 </template>
 
 <script>
 import Header from './components/Header'
 import Tab from './components/Tab'
-import Play from './views/Play'
+import Player from './views/Player'
 export default {
   name: 'App',
   components: {
     Header,
     Tab,
-    Play
+    Player
   },
   methods: {
 

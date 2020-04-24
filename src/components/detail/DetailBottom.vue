@@ -1,11 +1,11 @@
 <template>
     <div class="detail-bottom">
       <ul>
-        <li class="bottom-top">
-          <img src="" alt="">
+        <li class="bottom-top" @click="playAll">
+          <div class="play-all"></div>
           <p>播放全部</p>
         </li>
-        <li v-for="value in tracks" :key="value.id">
+        <li v-for="value in tracks" :key="value.id" @click="showNormalPlayer(value.id)">
           <p class="list-title">{{value.name}}</p>
           <p class="list-desc">{{value.al.name}} —— {{value.ar[0].name}}</p>
         </li>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'DetailBottom',
   props: {
@@ -21,6 +22,27 @@ export default {
       type: Array,
       default: () => [],
       required: true
+    }
+  },
+  methods: {
+    ...mapActions([
+      'setFullScreen',
+      'setMiniPlayer',
+      'setSongsInfo',
+      'setSongLyric'
+    ]),
+    showNormalPlayer (id) {
+      this.setFullScreen(true)
+      this.setSongsInfo([id])
+      this.setSongLyric(id)
+    },
+    playAll () {
+      const arr = []
+      this.tracks.forEach((value) => {
+        arr.push(value.id)
+      })
+      this.setSongsInfo(arr)
+      this.setFullScreen(true)
     }
   }
 }
@@ -55,7 +77,8 @@ export default {
     align-items: center;
     border-radius: 50px 50px 0 0;
     @include font_size($font_medium);
-    img{
+    font-weight: bold;
+    .play-all{
       width: 60px;
       height: 60px;
       margin-right: 20px;
