@@ -37,11 +37,11 @@ export default {
       this.setSongLyric(id)
     },
     playAll () {
-      const arr = []
+      const ids = []
       this.tracks.forEach((value) => {
-        arr.push(value.id)
+        ids.push(value.id)
       })
-      this.setSongsInfo(arr)
+      this.setSongsInfo(ids)
       this.setFullScreen(true)
     }
   }
@@ -59,16 +59,17 @@ export default {
     padding: 20px;
     border-bottom: 2px solid #ccc;
     box-sizing: border-box;
-    @include clamp(2);
     @include bg_sub_color();
     @include font_color();
     .list-title{
       margin-top: -10px;
       margin-bottom: 5px;
+      @include no-wrap();
       @include font_size($font_medium);
     }
     .list-desc{
       opacity: 0.8;
+      @include no-wrap();
       @include font_size($font_samll);
     }
   }
@@ -76,6 +77,7 @@ export default {
     display: flex;
     align-items: center;
     border-radius: 50px 50px 0 0;
+    @include border_color();
     @include font_size($font_medium);
     font-weight: bold;
     .play-all{

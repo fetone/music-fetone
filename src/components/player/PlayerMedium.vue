@@ -8,7 +8,7 @@
     </swiper-slide>
     <swiper-slide class="lyric" ref="slide">
       <IScroll ref="iscroll">
-        <ul>
+        <ul class="lyrics">
           <li v-for="(value, index) in songLyric" :key="index" :class="{'active': currentNum === index}">{{value}}</li>
         </ul>
       </IScroll>
@@ -79,7 +79,7 @@ export default {
       const lineNum = Math.floor(newValue)
       this.currentNum = this.calCurrentNum(lineNum)
       // 歌词同步
-      const activeHeight = document.querySelector('li.active').offsetTop
+      const activeHeight = document.querySelector('.lyrics li.active').offsetTop
       const slideHeight = this.$refs.slide.$el.offsetHeight
       if (activeHeight > slideHeight / 2) {
         this.$refs.iscroll.scrollTo(0, slideHeight / 2 - activeHeight, 1000)

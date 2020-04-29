@@ -27,6 +27,11 @@ const Search = (resolve) => {
     resolve(module)
   })
 }
+const Account = (resolve) => {
+  import('../views/Account').then((module) => {
+    resolve(module)
+  })
+}
 // 二级组件
 const Detail = (resolve) => {
   import('../views/Detail').then((module) => {
@@ -45,13 +50,27 @@ const routes = [
       { path: '/recommend/detail/:id/:type', component: Detail }
     ]
   },
-  { path: '/singer', component: Singer },
-  { path: '/rank', component: Rank },
-  { path: '/search', component: Search }
+  {
+    path: '/singer',
+    component: Singer,
+    children: [
+      { path: '/singer/detail/:id/:type', component: Detail }
+    ]
+  },
+  {
+    path: '/rank',
+    component: Rank,
+    children: [
+      { path: '/rank/detail/:idx/:type', component: Detail }
+    ]
+  },
+  { path: '/search', component: Search },
+  { path: '/account', component: Account }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

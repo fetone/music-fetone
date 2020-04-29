@@ -1,8 +1,12 @@
 <template>
   <div class="header" @click="changeTheme">
-    <div class="header-left"></div>
-    <p class="header-title">肥冬音乐</p>
-    <div class="header-right"></div>
+    <div class="left">
+      <slot name="left">左边</slot>
+    </div>
+    <slot name="center">中间</slot>
+    <div class="right">
+      <slot name="right">右边</slot>
+    </div>
   </div>
 </template>
 
@@ -39,23 +43,14 @@ export default {
   @include bg_color();
   display: flex;
   justify-content: space-between;
-  .header-left, .header-right{
+  .left, .right{
     width: 84px;
     height: 84px;
     margin-top: 8px;
-  }
-  .header-left{
-    @include bg_img('../assets/images/logo');
-  }
-  .header-right{
-    @include bg_img('../assets/images/account');
-  }
-  .header-title{
-    text-align: center;
-    line-height: 100px;
-    color: #FFFFFF;
-    font-weight: bold;
-    @include font_size($font_large);
+    *{
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

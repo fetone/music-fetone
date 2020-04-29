@@ -1,17 +1,56 @@
-// 1.安装 npm install axios
-// 2. 引入
+/*
+* 封装axios
+* */
 import axios from 'axios'
-import Vue from 'vue'
-// 进行全局的配置
+// import qs from 'querystring'
+
+import router from '../router'
+// 跳转登陆界面函数
+const toLogin = () => {
+  router.push({
+    path: '/login'
+  })
+}
+
+// 错误信息处理
+const errorHandle = (status, msg) => {
+  switch (status) {
+    case 400:
+      console.log('信息校验失败')
+      break
+    case 401:
+      // 重新登陆
+      toLogin()
+      console.log('认证失败')
+      break
+    case 403:
+      // token过时,要清除token并重新登陆
+      toLogin()
+      console.log('token校验失败')
+      break
+    case 404:
+      console.log('请求的资源不存在')
+      break
+    default:
+      console.log(msg)
+  }
+}
+
+// 全局配置
 axios.defaults.baseURL = 'http://127.0.0.1:3000/'
 axios.defaults.timeout = 5000
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.headers.common.Authorization = 'AUTH_TOKEN'
 
-let count = 0
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
-  count++
-  Vue.showLoading()
+/*  if (config.method === 'post') {
+    config.data = qs.stringify(config.data)
+  } */
+  /*  if (token) {
+    config.headers.common.Authorization = token
+  } */
   return config
 }, function (error) {
   // 对请求错误做些什么
@@ -21,17 +60,18 @@ axios.interceptors.request.use(function (config) {
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
   // 对响应数据做点什么
-  count--
-  if (count === 0) {
-    Vue.hiddenLoading()
-  }
-  return response
+  response.status === 200 ? Promise.resolve(response) : Promise.reject(response)
 }, function (error) {
   // 对响应错误做点什么
-  return Promise.reject(error)
+  const { response } = error
+  if (response) {
+    errorHandle(response.status, response.data.message)
+    return Promise.reject(response)
+  } else {
+    console.log('断网了')
+  }
 })
 
-// 封装自己的get/post方法
 export default {
   get: function (url = '', data = {}) {
     return new Promise(function (resolve, reject) {

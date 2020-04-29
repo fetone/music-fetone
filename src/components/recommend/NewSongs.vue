@@ -3,20 +3,12 @@
   <div class="song-top">
     最新音乐
   </div>
-  <ul class="song-list">
-    <li v-for="value in newSongs" :key="value.id" @click="showNormalPlayer(value.id)">
-      <img v-lazy="value.picUrl" alt="">
-      <div class="desc">
-        <h3>{{value.name}}</h3>
-        <p>{{value.song.artists[0].name}}</p>
-      </div>
-    </li>
-  </ul>
+  <SongList :newSongs="newSongs"></SongList>
 </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import SongList from '../SongList'
 export default {
   name: 'NewSongs',
   props: {
@@ -26,18 +18,8 @@ export default {
       required: true
     }
   },
-  methods: {
-    ...mapActions([
-      'setFullScreen',
-      'setMiniPlayer',
-      'setSongsInfo',
-      'setSongLyric'
-    ]),
-    showNormalPlayer (id) {
-      this.setFullScreen(true)
-      this.setSongsInfo([id])
-      this.setSongLyric(id)
-    }
+  components: {
+    SongList
   }
 }
 </script>
@@ -58,33 +40,6 @@ export default {
       @include bg_sub_color();
       @include font_size($font_large);
       @include font_color();
-    }
-    .song-list{
-      li{
-        width: 100%;
-        display: flex;
-        align-items: center;
-        padding: 20px;
-        border-bottom: 1px solid #ccc;
-        box-sizing: border-box;
-        img{
-          width: 100px;
-          border-radius: 10px;
-          margin-right: 20px;
-        }
-        .desc{
-          h3{
-            @include font_color();
-            @include font_size($font_large)
-          }
-          p{
-            margin-top: 10px;
-            opacity: 0.7;
-            @include font_color();
-            @include font_size($font_medium_s)
-          }
-        }
-      }
     }
   }
 </style>

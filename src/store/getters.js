@@ -37,5 +37,11 @@ export default {
   },
   curTime (state) {
     return state.curTime
+  },
+  favoriteList (state) {
+    return state.favoriteList
+  },
+  historySongs (state) {
+    return state.historySongs
   }
 }

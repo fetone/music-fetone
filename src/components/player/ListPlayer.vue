@@ -21,7 +21,7 @@
                 <p>{{value.name}}</p>
               </div>
               <div class="item-right">
-                <div class="favorite"></div>
+                <div class="favorite" @click.stop="favorite(value)" :class="{'active': isFavorite(value)}"></div>
                 <div class="remove" @click.stop="del(index)"></div>
               </div>
             </li>
@@ -63,7 +63,8 @@ export default {
       'setModeType',
       'setListPlayer',
       'delSong',
-      'setCurrentIndex'
+      'setCurrentIndex',
+      'setFavoriteList'
     ]),
     isPlay () {
       this.setIsPlaying(!this.isPlaying)
@@ -85,6 +86,15 @@ export default {
     },
     selectMusic (index) {
       this.setCurrentIndex(index)
+    },
+    favorite (value) {
+      this.setFavoriteList(value)
+    },
+    isFavorite (currentSong) {
+      const result = this.favoriteList.find((value) => {
+        return value.id === currentSong.id
+      })
+      return result !== undefined
     }
   },
   computed: {
@@ -93,7 +103,8 @@ export default {
       'modeType',
       'isShowListPlayer',
       'songsInfo',
-      'currentIndex'
+      'currentIndex',
+      'favoriteList'
     ])
   },
   watch: {
@@ -215,7 +226,10 @@ export default {
         .favorite {
           width: 60px;
           height: 60px;
-          @include bg_img("../../assets/images/small_favorite");
+          @include bg_img("../../assets/images/small_un_favorite");
+          &.active{
+            @include bg_img("../../assets/images/small_favorite");
+          }
         }
         .remove {
           width: 60px;

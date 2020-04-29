@@ -14,7 +14,7 @@
         <div class="prev" @click="prevMusic"></div>
         <div class="play" @click="isPlay" ref="play"></div>
         <div class="next" @click="nextMusic"></div>
-        <div class="favorite"></div>
+        <div class="favorite" @click="favorite" :class="{'active': isFavorite()}"></div>
       </div>
     </div>
 </template>
@@ -28,7 +28,8 @@ export default {
       'setIsPlaying',
       'setModeType',
       'setCurrentIndex',
-      'setCurrentTime'
+      'setCurrentTime',
+      'setFavoriteList'
     ]),
     isPlay () {
       this.setIsPlaying(!this.isPlaying)
@@ -73,6 +74,15 @@ export default {
       this.$refs.line.style.width = widthX + 'px'
       const time = widthX / this.$refs.progressBar.offsetWidth * this.totalTime
       this.setCurrentTime(time)
+    },
+    favorite () {
+      this.setFavoriteList(this.currentSong)
+    },
+    isFavorite () {
+      const result = this.favoriteList.find((value) => {
+        return value.id === this.currentSong.id
+      })
+      return result !== undefined
     }
   },
   watch: {
@@ -110,7 +120,9 @@ export default {
     ...mapGetters([
       'isPlaying',
       'modeType',
-      'currentIndex'
+      'currentIndex',
+      'currentSong',
+      'favoriteList'
     ])
   },
   props: {
@@ -204,6 +216,9 @@ export default {
     }
     .favorite{
       @include bg_img('../../assets/images/un_favorite');
+      &.active{
+        @include bg_img('../../assets/images/favorite');
+      }
     }
   }
 }

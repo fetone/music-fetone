@@ -15,7 +15,7 @@
 
 <script>
 import DetailHeader from '../components/detail/DetailHeader'
-import { getDetailAlbum, getDetailSong } from '../api'
+import { getDetailAlbum, getDetailSong, getSingerSongs, getOneRankList } from '../api'
 import DetailTop from '../components/detail/DetailTop'
 import DetailBottom from '../components/detail/DetailBottom'
 import IScroll from '../components/IScroll'
@@ -44,6 +44,30 @@ export default {
             name: data.album.name,
             coverImgUrl: data.album.picUrl,
             tracks: data.songs
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else if (type === 'singerSongs') {
+      getSingerSongs({ id: this.$route.params.id })
+        .then((data) => {
+          this.playList = {
+            name: data.artist.name,
+            coverImgUrl: data.artist.picUrl,
+            tracks: data.hotSongs
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else if (type === 'rankList') {
+      getOneRankList({ idx: this.$route.params.idx })
+        .then((data) => {
+          this.playList = {
+            name: data.name,
+            coverImgUrl: data.coverImgUrl,
+            tracks: data.tracks
           }
         })
         .catch((err) => {

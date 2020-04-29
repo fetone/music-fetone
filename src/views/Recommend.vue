@@ -71,9 +71,29 @@ export default {
         console.log(error)
       })
     // 获取最新音乐
+    // let songsList = []
     getNewSong()
       .then((data) => {
         this.newSongs = data.result
+        const result = data.result
+        const list = []
+        for (const item of result) {
+          const obj = {}
+          obj.id = item.id
+          obj.name = item.name
+          obj.imgUrl = item.picUrl
+          let singer = ''
+          for (let i = 0; i < item.song.artists.length; i++) {
+            if (i === 0) {
+              singer = item.song.artists[i].name
+            } else {
+              singer += '-' + item.song.artists[i].name
+            }
+          }
+          obj.singer = singer
+          list.push(obj)
+        }
+        this.newSongs = list
       })
       .catch((error) => {
         console.log(error)
