@@ -1,22 +1,7 @@
-## 安装vue-cli
+# 音乐项目
 
-* 安装脚手架工具: npm install -g @vue/cli
-* 检查是否安装成功: vue --version
-* 通过脚手架创建项目: vue create project-name
-
-```node_modules文件夹: 存储了依赖的相关的包
- public文件夹: 任何放置在 public 文件夹的静态资源都会被简单的复制，
-               而不经过 webpack。你需要通过绝对路径来引用它们
-               一般用于存储一些永远不会改变的静态资源或者webpack不支持的第三方库
- src文件夹: 代码文件夹
-  |----assets文件夹: 存储项目中自己的一些静态文件(图片/字体等)
-  |----components文件夹: 存储项目中的自定义组件(小组件,公共组件)
-  |----views文件夹: 存储项目中的自定义组件(大组件,页面级组件,路由级别组件)
-  |----router文件夹: 存储VueRouter相关文件
-  |----store文件夹: 存储Vuex相关文件
-  |----App.vue:根组件
-  |----main.js:入口js文件
-```
+* 后端接口: http://musicapi.leanapp.cn/
+* Vue全家桶 + axios + iscroll + swipper
 
 ## 移动端适配
 ```html
