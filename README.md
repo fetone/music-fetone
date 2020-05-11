@@ -1,7 +1,11 @@
 # 音乐项目
 
+1. 此项目为音乐 Web App(SPA)
+2. 包括歌单,播放器(全屏 迷你 列表), 歌手, 用户等多个子模块
+3. 使用Vue全家桶+ES6+Webpack等技术
+4. 采用模块化, 组件化, 工程化的模式开发
+
 * 后端接口: http://musicapi.leanapp.cn/
-* Vue全家桶 + axios + iscroll + swipper
 
 ## 移动端适配
 ```html
